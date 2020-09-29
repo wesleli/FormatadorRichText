@@ -6,7 +6,37 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Formatador de Texto</title>
+    <style>
+        .button {
+            background-color: #155DE9;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            font-family: 'Arial';
+        }
+
+        .label {
+            font-family: 'Arial';
+        }
+
+        .input {
+            font-size: 14px;
+        }
+    </style>
     <script type="text/javascript">
+
+        // quando receber a mensagem do codigo da pagina
+        window.onmessage = (event) => {
+            if (event.data) {
+                document.getElementById("theLabel").innerHTML = event.data;
+            }
+        };
+
+        // funcao de envio para o codigo da pagina
+        function button_click() {
+            window.parent.postMessage(document.getElementById("theMessage").value, "*");
+        }
 
 
     </script>
@@ -16,7 +46,7 @@
 <body>
     <span id="theLabel" class="label">A impressão aparecerá aqui</span>
     <br /><br />
-    <button class="button">
+    <button class="button" onclick="button_click()">
         < Enviar Texto</button>
             <br /><br />
             <input type="text" class="input" id="theMessage">
