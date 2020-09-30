@@ -5,28 +5,33 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
     <title>Formatador de Texto</title>
+
+    <!-- Normalize CSS-->
+    <link rel="stylesheet" href="./css/normalize.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+
+    <script src="https://cdn.ckeditor.com/4.15.0/full/ckeditor.js"></script>
+
     <style>
-        .button {
-            background-color: #155DE9;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            text-align: center;
-            font-family: 'Arial';
-        }
-
-        .label {
-            font-family: 'Arial';
-        }
-
-        .input {
-            font-size: 14px;
+        body {
+            background-color: gainsboro;
         }
     </style>
-    <script src="https://cdn.ckeditor.com/4.15.0/standard-all/ckeditor.js"></script>
+
+    <!-- JS com a lógica da programacao-->
     <script type="text/javascript">
 
+        CKEDITOR.addCss(
+            'body.document-editor { margin: 0.5cm auto; border: 1px #D3D3D3 solid; border-radius: 5px; background: white; box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); }' +
+            'body.document-editor, div.cke_editable { width: 700px; padding: 1cm 2cm 2cm; } ' +
+            'body.document-editor table td > p, div.cke_editable table td > p { margin-top: 0; margin-bottom: 0; padding: 4px 0 3px 5px;} ' +
+            'blockquote { font-family: sans-serif, Arial, Verdana, "Trebuchet MS", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; } ');
 
         // carregar CKEDITOR no elemento html
         window.onload = () => {
@@ -34,7 +39,8 @@
                 uiColor: '#66AB16',
                 extraPlugins: 'editorplaceholder',
                 editorplaceholder: 'Você pode digitar o seu texto aqui...',
-                language: 'pt'
+                language: 'pt',
+                bodyClass: 'document-editor'
             })
         };
 
@@ -42,13 +48,18 @@
         window.onmessage = (event) => {
             if (event.data) {
                 document.getElementById("theLabel").innerHTML = event.data;
-                console.log('cheguei aqui2');
             }
         };
 
         // funcao de envio para o codigo da pagina
         function button_click() {
             window.parent.postMessage(CKEDITOR.instances['CK1'].getData(), "*");
+
+        };
+
+        // funcao para limpar campo de impressao
+        function button_clear() {
+            document.getElementById("theLabel").innerHTML = "";
 
         };
 
@@ -59,12 +70,38 @@
 
 <body>
 
-    <div>
-        <span id="theLabel" class="label"></span>
-        <textarea cols="10" id="CK1" name="theMessage" rows="10" data-sample-short></textarea>
-        <br /> <br />
-        <button class="button" onclick="button_click()">
-            Enviar Texto</button>
+
+
+    <div class="container-fluid">
+        <nav class="navbar navbar-light bg-light">
+            <span class="navbar-brand mb-0 h1">Formatador Rich Text</span>
+        </nav>
+        <div class="row">
+
+            <div class="col">
+                <textarea cols="10" id="CK1" name="theMessage" rows="10" data-sample-short></textarea>
+                <br />
+                <button class="button btn btn-primary"" onclick=" button_click()">
+                    Enviar Texto</button>
+            </div>
+
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">Seu texto será impresso aqui. </div>
+                    <Div class="card-body">
+                        <span id="theLabel">
+                            Esse Projeto é para um teste de comunicação entre o código da pagina e os elementos HTML.
+                            Crie
+                            seu Rich Text com a formatação de seu desejo e envie para o programa possa transformar este
+                            elemento HTML.
+                        </span>
+                    </Div>
+                    <button class="button btn btn-primary"" onclick=" button_clear()">
+                        Limpar texto</button>
+                </div>
+            </div>
+
+        </div>
     </div>
 
 </body>
