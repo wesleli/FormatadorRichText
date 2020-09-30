@@ -24,19 +24,33 @@
             font-size: 14px;
         }
     </style>
+    <script src="https://cdn.ckeditor.com/4.15.0/standard-all/ckeditor.js"></script>
     <script type="text/javascript">
+
+
+        // carregar CKEDITOR no elemento html
+        window.onload = () => {
+            CKEDITOR.replace('theMessage', {
+                uiColor: '#66AB16',
+                extraPlugins: 'editorplaceholder',
+                editorplaceholder: 'Você pode digitar o seu texto aqui...',
+                language: 'pt'
+            })
+        };
 
         // quando receber a mensagem do codigo da pagina
         window.onmessage = (event) => {
             if (event.data) {
                 document.getElementById("theLabel").innerHTML = event.data;
+                console.log('cheguei aqui2');
             }
         };
 
         // funcao de envio para o codigo da pagina
         function button_click() {
-            window.parent.postMessage(document.getElementById("theMessage").value, "*");
-        }
+            window.parent.postMessage(CKEDITOR.instances['CK1'].getData(), "*");
+
+        };
 
 
     </script>
@@ -44,12 +58,16 @@
 </head>
 
 <body>
-    <span id="theLabel" class="label">A impressão aparecerá aqui</span>
-    <br /><br />
-    <button class="button" onclick="button_click()">
-        < Enviar Texto</button>
-            <br /><br />
-            <input type="text" class="input" id="theMessage">
+
+    <div>
+        <span id="theLabel" class="label"></span>
+        <textarea cols="10" id="CK1" name="theMessage" rows="10" data-sample-short></textarea>
+        <br /> <br />
+        <button class="button" onclick="button_click()">
+            Enviar Texto</button>
+    </div>
+
 </body>
+
 
 </html>
